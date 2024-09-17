@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_collect_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.collect.form.inherit</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.stock_picking_type_kanban" />
+        <field name="sequence">1</field>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//div[@name='stock_picking']" position="attributes">
+                    <attribute name="t-if">['incoming', 'outgoing', 'internal','from_sale'].indexOf(record.code.raw_value) &gt; -1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='get_action_picking_tree_ready']" position="inside">
+                    <span t-elif="record.code.raw_value == 'from_sale'"><t t-esc="record.count_picking_ready.value"/> To Process</span>
+                </xpath>
+            </data>
+        </field>
+    </record>
+</odoo>
+    
