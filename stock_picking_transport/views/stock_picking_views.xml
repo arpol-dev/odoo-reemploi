@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_transport.stock_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.transportation.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="sequence">2000</field>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//div[@class='o_td_label']" position="before">
+                    <field name="sale_id" attrs="{'invisible': [('picking_type_code','!=','from_sale')], 'required': [('picking_type_code','=','from_sale')]}"/>
+                </xpath>
+                
+                <xpath expr="//div[@class='o_td_label']" position="replace">
+                    <div class="o_td_label">
+                        <label for="partner_id" string="Delivery Address" style="font-weight:bold;" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+                        <label for="partner_id" string="Receive from" style="font-weight:bold;" attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}"/>
+                        <label for="partner_id" string="Contact" style="font-weight:bold;" attrs="{'invisible': [('picking_type_code', 'in', ['incoming', 'outgoing', 'from_sale'])]}"/>
+                        <label for="partner_id" string="Adresse de la collecte" style="font-weight:bold;" attrs="{'invisible': [('picking_type_code', '!=', 'from_sale')]}"/>
+                    </div>
+                </xpath>
+                
+                <field name='partner_id' position='attributes'>
+                    <attribute name='attrs'>{'required': [('picking_type_code','=','from_sale')]}</attribute>
+                </field>
+                
+                <xpath expr="//label[@for='scheduled_date']" position="before">
+                    <field name="create_date"/>
+                </xpath>
+                
+                <xpath expr="//label[@for='scheduled_date']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('picking_type_code','=','from_sale')]}</attribute>
+                </xpath>
+                <xpath expr="//div[@class='o_row']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('picking_type_code','=','from_sale')]}</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('picking_type_code','=','from_sale')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='owner_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('picking_type_code','=','from_sale')]}</attribute>
+                </xpath>
+                
+                <xpath expr="//group[@name='other_infos']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//group[@name='other_infos']" position="after">
+                    <group string="Trajet" name="road_info">
+                        <field name="distance_collecte"/>
+                        <field name="nb_ar"/>
+                    </group>
+                    <group string="Véhicule et intervenants" name="truck_info">
+                        <field name="nb_intervenants"/>
+                        <field name="car"/>
+                        <field name="conso_vehicule"/>
+                    </group>
+                    <group string="Consommation et frais" name="conso_info">
+                        <field name="conso_totale"/>
+                        <field name="prix_carburant"/>
+                        <field name="frais_peage"/>
+                        <field name="frais_km"/>
+                    </group>
+                    <group string="Coût de transport" name="cost_info">
+                        <field name="cout_transport_net"/>
+                        <field name="cout_transport_major"/>
+                    </group>
+                    <group string="Temps" name="time_info">
+                        <field name="duree_trajet"/>
+                        <field name="duree_collecte"/>
+                    </group>
+                </xpath>
+                
+                <xpath expr="//page[@name='extra']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('picking_type_code','!=','from_sale')]}</attribute>
+                </xpath>
+            </data>
+        </field>
+    </record>
+</odoo>
+    
