@@ -9,7 +9,7 @@
     "author": "ArPol",
     "website": "https://github.com/arpol-dev",
     "license": "AGPL-3",
-    "data": ["views/stock_pickng_views.xml"],
+    "data": ["views/stock_picking_views.xml"],
     "depends": [
         "base",
         "stock_picking_on_sales",
