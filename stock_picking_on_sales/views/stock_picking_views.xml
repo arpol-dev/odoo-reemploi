@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="stock_picking_collect_form_inherit" model="ir.ui.view">
+    <record id="stock_picking_collect_kanban_inherit" model="ir.ui.view">
         <field name="name">stock.picking.collect.form.inherit</field>
         <field name="model">stock.picking.type</field>
         <field name="inherit_id" ref="stock.stock_picking_type_kanban" />
@@ -11,7 +11,52 @@
                     <attribute name="t-if">['incoming', 'outgoing', 'internal','from_sale'].indexOf(record.code.raw_value) &gt; -1</attribute>
                 </xpath>
                 <xpath expr="//button[@name='get_action_picking_tree_ready']" position="inside">
-                    <span t-elif="record.code.raw_value == 'from_sale'"><t t-esc="record.count_picking_ready.value"/> To Process</span>
+                    <span t-elif="record.code.raw_value == 'from_sale'"><t t-esc="record.count_picking_ready.value"/> à traiter</span>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+    <record id="stock_picking_collect_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.collect.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="priority" eval="1500"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//div[@class='o_td_label']" position="before">
+                    <field name="sale_id" attrs="{'invisible': [('picking_type_code','!=','from_sale')], 'required': [('picking_type_code','=','from_sale')]}"/>
+                </xpath>
+                
+                <xpath expr="//div[@class='o_td_label']" position="replace">
+                    <div class="o_td_label">
+                        <label for="partner_id" string="Delivery Address" style="font-weight:bold;" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}"/>
+                        <label for="partner_id" string="Receive from" style="font-weight:bold;" attrs="{'invisible': [('picking_type_code', '!=', 'incoming')]}"/>
+                        <label for="partner_id" string="Contact" style="font-weight:bold;" attrs="{'invisible': [('picking_type_code', 'in', ['incoming', 'outgoing', 'from_sale'])]}"/>
+                        <label for="partner_id" string="Adresse de la collecte" style="font-weight:bold;" attrs="{'invisible': [('picking_type_code', '!=', 'from_sale')]}"/>
+                    </div>
+                </xpath>
+                
+                <field name='partner_id' position='attributes'>
+                    <attribute name='attrs'>{'required': [('picking_type_code','=','from_sale')]}</attribute>
+                </field>
+                
+                <xpath expr="//label[@for='scheduled_date']" position="before">
+                    <field name="create_date"/>
+                </xpath>
+                
+                <xpath expr="//label[@for='scheduled_date']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('picking_type_code','=','from_sale')]}</attribute>
+                </xpath>
+                <xpath expr="//div[@class='o_row']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('picking_type_code','=','from_sale')]}</attribute>
+                </xpath>
+                
+                <xpath expr="//field[@name='origin']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('picking_type_code','=','from_sale')]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='owner_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('picking_type_code','=','from_sale')]}</attribute>
                 </xpath>
             </data>
         </field>
