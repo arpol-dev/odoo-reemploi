@@ -10,4 +10,4 @@ import logging
 class StockPickingType(models.Model):
     _inherit = "stock.picking.type"
 
-    code = fields.Selection(selection_add=[("from_sale", "Collecte")], ondelete='cascade')
+    code = fields.Selection(selection_add=[("from_sale", "Collecte")], ondelete={"from_sale": "cascade"})
