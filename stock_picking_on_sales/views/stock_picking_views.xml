@@ -4,7 +4,7 @@
         <field name="name">stock.picking.collect.form.inherit</field>
         <field name="model">stock.picking.type</field>
         <field name="inherit_id" ref="stock.stock_picking_type_kanban" />
-        <field name="sequence">1</field>
+        <field name="priority" eval="1"/>
         <field name="arch" type="xml">
             <data>
                 <xpath expr="//div[@name='stock_picking']" position="attributes">
